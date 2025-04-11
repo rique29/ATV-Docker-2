@@ -6,7 +6,7 @@ services:
     container_name: joomla-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: sua_senha_mysql # Substitua por uma senha segura
+      MYSQL_ROOT_PASSWORD: Admin
     volumes:
       - joomla_db_data:/var/lib/mysql
     networks:
@@ -42,7 +42,7 @@ services:
       PMA_HOST: db
       PMA_PORT: 3306
       PMA_USER: root
-      PMA_PASSWORD: sua_senha_mysql # Deve ser a mesma senha do serviço 'db'
+      PMA_PASSWORD: Admin
     depends_on:
       - db
     networks:
