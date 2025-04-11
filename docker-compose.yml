@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: joomla-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: sua_senha_mysql # Substitua por uma senha segura
+    volumes:
+      - joomla_db_data:/var/lib/mysql
+    networks:
+      - joomla-net
+    expose:
+      - "3306"
+
+  app:
+    image: joomla/joomla
+    container_name: joomla-app
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      JOOMLA_DB_HOST: db
+      JOOMLA_DB_USER: root
+      JOOMLA_DB_PASSWORD: sua_senha_mysql # Deve ser a mesma senha do serviço 'db'
+      JOOMLA_DB_NAME: joomla
+    depends_on:
+      - db
+    volumes:
+      - joomla_app_data:/var/www/html
+    networks:
+      - joomla-net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: sua_senha_mysql # Deve ser a mesma senha do serviço 'db'
+    depends_on:
+      - db
+    networks:
+      - joomla-net
+
+volumes:
+  joomla_db_data:
+  joomla_app_data:
+
+networks:
+  joomla-net:
+    driver: bridge
