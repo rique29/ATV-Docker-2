@@ -2,11 +2,14 @@ version: '3.8'
 
 services:
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     container_name: joomla-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Admin
+      MYSQL_ROOT_PASSWORD: sua_senha_root
+      MYSQL_DATABASE: joomla
+      MYSQL_USER: joomla
+      MYSQL_PASSWORD: Admin
     volumes:
       - joomla_db_data:/var/lib/mysql
     networks:
@@ -15,15 +18,15 @@ services:
       - "3306"
 
   app:
-    image: joomla/joomla
+    image: joomla:latest
     container_name: joomla-app
     restart: always
     ports:
       - "8080:80"
     environment:
       JOOMLA_DB_HOST: db
-      JOOMLA_DB_USER: root
-      JOOMLA_DB_PASSWORD: sua_senha_mysql # Deve ser a mesma senha do serviço 'db'
+      JOOMLA_DB_USER: joomla
+      JOOMLA_DB_PASSWORD: admin2
       JOOMLA_DB_NAME: joomla
     depends_on:
       - db
@@ -42,7 +45,7 @@ services:
       PMA_HOST: db
       PMA_PORT: 3306
       PMA_USER: root
-      PMA_PASSWORD: Admin
+      PMA_PASSWORD: sua_senha_root
     depends_on:
       - db
     networks:
