@@ -45,7 +45,7 @@ services:
       PMA_HOST: db
       PMA_PORT: 3306
       PMA_USER: root
-      PMA_PASSWORD: sua_senha_root
+      PMA_PASSWORD: Admin3
     depends_on:
       - db
     networks:
